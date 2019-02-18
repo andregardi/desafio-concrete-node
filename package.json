@@ -3,16 +3,22 @@
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
   "devDependencies": {
-    "ts-node": "3.3.0",
-    "@types/node": "^8.0.29",
-    "typescript": "2.5.2"
-  },
-  "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/body-parser": "^1.17.0",
     "@types/cors": "^2.8.4",
     "@types/helmet": "0.0.42",
     "@types/jsonwebtoken": "^8.3.0",
+    "@types/node": "^8.0.29",
+    "prettier": "^1.16.4",
+    "ts-node": "3.3.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript": "2.5.2",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "tslint": "^5.12.1"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.1",
     "class-validator": "^0.9.1",
@@ -22,7 +28,6 @@
     "jsonwebtoken": "^8.4.0",
     "reflect-metadata": "^0.1.10",
     "sqlite3": "^4.0.3",
-    "ts-node-dev": "^1.0.0-pre.32",
     "typeorm": "0.2.12"
   },
   "scripts": {
