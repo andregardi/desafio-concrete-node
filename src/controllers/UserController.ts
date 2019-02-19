@@ -10,7 +10,6 @@ import {
   classValidatorErrorsFormat,
   errorMessageFormat
 } from "../helpers/errorFormater";
-import config from "../config/config";
 
 class UserController {
   singup = async (req: Request, res: Response) => {
@@ -29,7 +28,6 @@ class UserController {
     user.hashPassword();
 
     const userRepository = getRepository(User);
-    userRepository.find({ relations: ["phones", "geolocation"] });
     try {
       await userRepository.save(user);
     } catch (e) {
@@ -61,12 +59,20 @@ class UserController {
       return;
     }
 
+    user.lastLogin = new Date();
+    await userRepository.save(user);;
+
     const formatedUser = user.singUpResponseFormat();
     res.send(formatedUser);
   };
 
   getOneById = async (req: Request, res: Response) => {
     const { user_id } = req.params;
+    const sameUserId = user_id == res.locals.jwtPayload.user_id;
+    if (!sameUserId){
+      const formatedError = errorMessageFormat("Não autorizado");
+      res.status(401).send(formatedError);
+    }
     const userRepository = getRepository(User);
     let user: User;
     try {

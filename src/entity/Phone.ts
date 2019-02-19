@@ -16,11 +16,11 @@ export class Phone {
 
   @Column()
   @Length(8, 9)
-  numero: string;
+  number: string;
 
   @Column()
   @Length(2, 2)
-  ddd: string;
+  code: string;
 
   @ManyToOne(type => User, user => user.phones)
   user: User;

@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 import * as jwt from "jsonwebtoken";
 
-import { Length, IsNotEmpty, IsEmail, Matches } from "class-validator";
+import { Length, IsNotEmpty, IsEmail, Matches, ValidateNested } from "class-validator";
 import * as bcrypt from "bcryptjs";
 import { Phone } from "./Phone";
 import { Geolocation } from "./Geolocation";
@@ -39,6 +39,7 @@ export class User {
     cascade: ["insert", "update"],
     eager: true
   })
+  @ValidateNested({ each: true })
   phones: Phone[];
 
   @OneToOne(type => Geolocation, geolocation => geolocation.user, {
@@ -77,11 +78,17 @@ export class User {
     const jwtToken = jwt.sign({ user_id: this.id }, jwtSecret, {
       expiresIn: "30m"
     });
+    const telefones = this.phones.map(phone => {
+      let telefone: any = {};
+      telefone.ddd = phone.code;
+      telefone.numero = phone.number;
+      return telefone;
+    });
     const formatedUser = {
       id: this.id,
       nome: this.name,
       email: this.email,
-      telefones: this.phones,
+      telefones,
       CEP: this.postalCode,
       geolocation: this.geolocation.toPoint(),
       data_criacao: this.createdAt,
@@ -101,8 +108,8 @@ export class User {
 
     const phones = body.telefones.map(telefone => {
       let phone = new Phone();
-      phone.ddd = telefone.ddd;
-      phone.numero = telefone.numero;
+      phone.code = telefone.ddd;
+      phone.number = telefone.numero;
       return phone;
     });
 
